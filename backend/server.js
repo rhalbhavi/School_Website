@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 // import data
 const authRoutes = require("./routes/Auth");
-
+const inquiryRoutes = require('./routes/inquiryRoutes.js');
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -15,7 +15,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);
-
+app.use("/api/inquiries", inquiryRoutes);
 // connect to mongodb
 
 main()
