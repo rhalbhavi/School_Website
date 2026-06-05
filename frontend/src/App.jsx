@@ -24,6 +24,7 @@ import Scholarship from "./pages/Scholarship";
 import Gallery from "./pages/Gallery";
 import Student from "./pages/Student";
 import DownloadProspectus from "./pages/DownloadProspectus";
+import FacultyDirectory from "./pages/FacultyDirectory";
 
 
 import Login from "./pages/Login";
