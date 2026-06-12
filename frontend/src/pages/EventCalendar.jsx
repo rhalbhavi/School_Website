@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 import events from "../data/events";
 
@@ -9,14 +11,32 @@ const roles = ["student", "teacher", "staff"];
 const EventCalendar = () => {
   const [date, setDate] = useState(new Date());
   const [currentRole, setCurrentRole] = useState("student");
+  const exportPDF = () => {
+    const doc = new jsPDF();
 
-  const filteredEvents = events.filter(
-    (event) => event.role === currentRole
-  );
+    doc.setFontSize(18);
+    doc.text(`${currentRole.toUpperCase()} Events`, 14, 20);
+
+    const tableColumn = ["Title", "Date", "Description"];
+
+    const tableRows = filteredEvents.map((event) => [
+      event.title,
+      event.date,
+      event.description,
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 30,
+    });
+
+    doc.save(`${currentRole}-events.pdf`);
+  };
+  const filteredEvents = events.filter((event) => event.role === currentRole);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-6 py-10">
-      
       {/* Heading */}
       <h1 className="text-3xl sm:text-5xl font-bold text-center text-blue-700 mb-4">
         Event Calendar
@@ -25,6 +45,15 @@ const EventCalendar = () => {
       <p className="text-center text-gray-600 text-lg mb-10">
         View upcoming events, deadlines, and important schedules
       </p>
+
+      <div className="flex justify-center mb-8">
+        <button
+          onClick={exportPDF}
+          className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition"
+        >
+          Export to PDF
+        </button>
+      </div>
 
       {/* Role Buttons */}
       <div className="flex justify-center gap-4 mb-16 flex-wrap">
@@ -69,14 +98,10 @@ const EventCalendar = () => {
             </div>
 
             {/* Date */}
-            <p className="text-gray-500 mb-3 text-lg">
-              📅 {event.date}
-            </p>
+            <p className="text-gray-500 mb-3 text-lg">📅 {event.date}</p>
 
             {/* Description */}
-            <p className="text-gray-700 leading-relaxed">
-              {event.description}
-            </p>
+            <p className="text-gray-700 leading-relaxed">{event.description}</p>
           </div>
         ))}
       </div>
