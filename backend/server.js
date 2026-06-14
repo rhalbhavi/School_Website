@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
-
+const validateEnv = require("./config/validateEnv.js");
 const authRoutes = require("./routes/Auth");
 const inquiryRoutes = require("./routes/inquiryRoutes.js");
 const noticeRoutes = require("./routes/noticeRoutes.js");
@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+validateEnv();
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/inquiries", inquiryRoutes);
